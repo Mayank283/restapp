@@ -2,12 +2,9 @@ package org.mayank.restapp.simple.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Service;
 
-import org.mayank.restapp.simple.model.Course;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-@Component
+@Service
 public class CourseServiceImpl implements CourseService{
 	
 //	@Autowired
