@@ -1,13 +1,23 @@
 package org.mayank.restapp.simple.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@XmlRootElement
+@Component
+@JsonPropertyOrder({ "username", "password","email","mobile"})
 public class User {
-
+	
+	@JsonProperty("username")
 	String username;
+	
+	@JsonProperty("password")
 	String password;
+	
+	@JsonProperty("email")
 	String email;
+	
+	@JsonProperty("mobile")
 	Long mobileNumber;
 
 	public String getUsername() {
