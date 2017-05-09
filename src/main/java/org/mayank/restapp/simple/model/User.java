@@ -1,6 +1,7 @@
 package org.mayank.restapp.simple.model;
 
 import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 

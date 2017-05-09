@@ -18,7 +18,8 @@ public class SignUpController {
 
 	@CrossOrigin
 	@RequestMapping(value = "/signup", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void signUp(@RequestBody User user) {
+	public User signUp(@RequestBody User user) {
 		signUpService.signup(user);
+		return user;
 	}
 }
