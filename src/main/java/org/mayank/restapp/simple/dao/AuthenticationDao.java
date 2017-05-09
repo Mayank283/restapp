@@ -1,8 +1,8 @@
 package org.mayank.restapp.simple.dao;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import org.mayank.restapp.simple.model.User;
 
 public interface AuthenticationDao {
 	
-	UserDetails getUserDetails(String username);	
+	User getUserDetails(String username);	
 }

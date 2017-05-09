@@ -19,6 +19,13 @@ public class JwtUser implements UserDetails{
 	private Boolean enabled;
 	private Collection<? extends GrantedAuthority> authorities;
 	
+	public JwtUser(String userName, String email, String password) {
+		super();
+		this.userName = userName;
+		this.email = email;
+		this.password = password;
+	}
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.authorities;
