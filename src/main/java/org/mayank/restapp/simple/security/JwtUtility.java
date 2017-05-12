@@ -23,5 +23,5 @@ public class JwtUtility {
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, secret) //Signature Algorithm
                 .compact();
-    }	
+    }
 }

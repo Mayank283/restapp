@@ -18,7 +18,7 @@ public class JwtUserDetailServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		User user;
-		user = authenticationDao.getUserDetails(username);
+		user = authenticationDao.getUserDetails(username);//why ??
 		
 		if (user == null) {
 			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));

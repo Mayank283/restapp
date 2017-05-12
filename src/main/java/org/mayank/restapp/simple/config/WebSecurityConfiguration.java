@@ -1,5 +1,6 @@
 package org.mayank.restapp.simple.config;
 
+import org.mayank.restapp.simple.security.JwtAuthenticationFilter;
 import org.mayank.restapp.simple.security.RestAppAuthenticationEntryPoint;
 import org.mayank.restapp.simple.security.RestAppAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -40,16 +42,30 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
+	/*
+	 * @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+	 * 
+	 * @Override public AuthenticationManager authenticationManagerBean() throws
+	 * Exception { return super.authenticationManagerBean(); }
+	 */
+
+	/*@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilterBean() {
+		return new JwtAuthenticationFilter();
+	}*/
+
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable().exceptionHandling().authenticationEntryPoint(restAppAuthenticationEntryPoint)
 				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.authorizeRequests()
-				.antMatchers("/login").permitAll()
-				.antMatchers("/signup").permitAll()
-				.antMatchers("/employee/**").permitAll()
-				.antMatchers("/test").permitAll()
-				.antMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-				.anyRequest().authenticated();
+				.authorizeRequests().antMatchers("/login").permitAll().antMatchers("/signup").permitAll()
+				.antMatchers("/employee/**").permitAll().antMatchers("/test").permitAll()
+				.antMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js")
+				.permitAll().anyRequest().authenticated();
+
+		//httpSecurity.addFilterBefore(jwtAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
+
+		// disable page caching
+		httpSecurity.headers().cacheControl();
 	}
 }

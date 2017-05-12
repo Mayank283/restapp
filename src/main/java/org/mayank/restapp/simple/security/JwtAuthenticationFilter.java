@@ -1,4 +1,4 @@
-/*package org.mayank.restapp.simple.security;
+package org.mayank.restapp.simple.security;
 
 import java.io.IOException;
 
@@ -7,13 +7,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter{
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest arg0, HttpServletResponse arg1, FilterChain arg2)
+			throws ServletException, IOException {
+		System.out.println("Mayank");
+	}/* extends AbstractAuthenticationProcessingFilter {
 	
-	public JwtAuthenticationFilter() {
+/*	public JwtAuthenticationFilter() {
         super("/**");
     }
 
@@ -37,6 +41,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         JwtAuthenticationToken authRequest = new JwtAuthenticationToken(authToken);
 
         return getAuthenticationManager().authenticate(authRequest);
+    	return null;
     }
 
     @Override
@@ -47,6 +52,5 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         // As this authentication is in HTTP header, after success we need to continue the request normally
         // and return the response as if the resource was not secured at all
         chain.doFilter(request, response);
-    }
+    }*/
 }
-*/

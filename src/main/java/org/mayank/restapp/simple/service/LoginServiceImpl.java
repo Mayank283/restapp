@@ -17,7 +17,5 @@ public class LoginServiceImpl implements LoginService{
 		
 		return 	new JwtUserResponse(jwtUtility.generateToken(jwtUserRequest));
 		
-	}
-
-	
+	}	
 }
