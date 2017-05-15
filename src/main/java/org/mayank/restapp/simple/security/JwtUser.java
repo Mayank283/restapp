@@ -16,14 +16,12 @@ public class JwtUser implements UserDetails{
 	private String lastName;
 	private String email;
 	private String password;
-	private Boolean enabled;
+	private Boolean enabled = true;
 	private Collection<? extends GrantedAuthority> authorities;
 	
-	public JwtUser(String userName, String email, String password) {
+	public JwtUser(String userName) {
 		super();
 		this.userName = userName;
-		this.email = email;
-		this.password = password;
 	}
 	
 	@Override

@@ -11,17 +11,30 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtUtility {
 
 	@Value("${jwt.secret}")
-    private String secret;
-	
+	private String secret;
+
 	public String generateToken(JwtUserRequest u) {
-        Claims claims = Jwts.claims().setSubject(u.getUserName());
-        claims.put("password", u.getPassword() + "");
-        /*claims.put("userId", u.getId() + "");
-        claims.put("role", u.getRole());
-*/
-        return Jwts.builder()
-                .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, secret) //Signature Algorithm
-                .compact();
-    }
+		Claims claims = Jwts.claims().setSubject(u.getUserName());
+		claims.put("password", u.getPassword() + "");
+		/*
+		 * claims.put("userId", u.getId() + ""); claims.put("role",
+		 * u.getRole());
+		 */
+		return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret) // Signature
+																							// Algorithm
+				.compact();
+	}
+
+	public String getUsernameFromToken(String token) {
+
+		String username;
+
+		try {
+			Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+			username = body.getSubject();
+		} catch (Exception e) {
+			return null;
+		}
+		return username;
+	}
 }
