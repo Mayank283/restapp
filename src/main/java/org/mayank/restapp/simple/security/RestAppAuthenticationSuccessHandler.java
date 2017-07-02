@@ -11,12 +11,11 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 @Component
-public class RestAppAuthenticationSuccessHandler implements AuthenticationSuccessHandler  {
+public class RestAppAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest arg0, HttpServletResponse arg1, Authentication arg2)
 			throws IOException, ServletException {
-		
-	}
 
+	}
 }

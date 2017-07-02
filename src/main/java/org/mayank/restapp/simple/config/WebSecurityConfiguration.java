@@ -4,9 +4,9 @@ import org.mayank.restapp.simple.security.JwtAuthenticationFilter;
 import org.mayank.restapp.simple.security.JwtAuthenticationProvider;
 import org.mayank.restapp.simple.security.RestAppAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,7 +27,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	UserDetailsService userDetailsService;
-	
+
 	@Autowired
 	JwtAuthenticationProvider jwtAuthenticationProvider;
 
@@ -52,25 +52,35 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return jwtAuthenticationFilter;
 	}
 
+	/**
+	 * We do this to ensure our Filter is only loaded once into Application
+	 * Context
+	 *
+	 */
+	@Bean(name = "authenticationFilterRegistration")
+	public FilterRegistrationBean myAuthenticationFilterRegistration(JwtAuthenticationFilter filter) {
+		final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+		filterRegistrationBean.setFilter(filter);
+		filterRegistrationBean.setEnabled(false);
+		return filterRegistrationBean;
+	}
+
 	@Override
 	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 		authenticationManagerBuilder.authenticationProvider(this.jwtAuthenticationProvider);
 	}
-	
-	/*@Override
-	public void configure(WebSecurity web){
-		web.ignoring().antMatchers("/login");
-	}*/
+
+	/*
+	 * @Override public void configure(WebSecurity web){
+	 * web.ignoring().antMatchers("/login"); }
+	 */
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable().exceptionHandling().authenticationEntryPoint(restAppAuthenticationEntryPoint)
 				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.authorizeRequests().antMatchers("/login").permitAll()
-				.antMatchers("/signup").permitAll()
-				.antMatchers("/employee/**").permitAll().antMatchers("/test").permitAll()
-				.antMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js")
-				.permitAll().anyRequest().authenticated();
+				.authorizeRequests().antMatchers("/login").permitAll().antMatchers("/signup").permitAll()
+				.antMatchers("/employee/**").permitAll().antMatchers("/test").permitAll();
 
 		// Adding the CustomFilter in security
 		httpSecurity.addFilterBefore(jwtAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);

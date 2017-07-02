@@ -19,7 +19,7 @@ public class TestController {
 	@RequestMapping(method = RequestMethod.POST)
 	public User testMethod(@RequestBody Test test) throws JSONException, JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-	    User usr = mapper.readValue(test.getRequest().toString(), User.class);      
+	    User usr = mapper.readValue(test.getRequest().toString(), User.class);
 		return usr;
 	}
 	
