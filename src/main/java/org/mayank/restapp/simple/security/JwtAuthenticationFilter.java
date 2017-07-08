@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 import io.jsonwebtoken.JwtException;
@@ -19,13 +20,20 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 		super(defaultFilterProcessesUrl);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.security.web.authentication.
+	 * AbstractAuthenticationProcessingFilter#attemptAuthentication(javax.
+	 * servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
 
 		String header = request.getHeader("Authorization");
 
-		if (header == null) {	
+		if (header == null) {
 			throw new JwtException("No JWT token found in request headers");
 		}
 
@@ -33,10 +41,24 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 		return getAuthenticationManager().authenticate(authRequest);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.security.web.authentication.
+	 * AbstractAuthenticationProcessingFilter#successfulAuthentication(javax.
+	 * servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
+	 * javax.servlet.FilterChain,
+	 * org.springframework.security.core.Authentication)
+	 */
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
-		super.successfulAuthentication(request, response, chain, authResult);
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("Authentication success. Updating SecurityContextHolder to contain: " + authResult);
+		}
+
+		SecurityContextHolder.getContext().setAuthentication(authResult);
 
 		// As this authentication is in HTTP header, after success we need to
 		// continue the request normally
