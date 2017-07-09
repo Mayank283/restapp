@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import io.jsonwebtoken.JwtException;
 
@@ -31,14 +32,27 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
 
-		String header = request.getHeader("Authorization");
+		System.out.println(request.getMethod());
+		if (request.getMethod().equals(RequestMethod.GET.toString())) {
 
-		if (header == null) {
-			throw new JwtException("No JWT token found in request headers");
+			response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+			response.setHeader("Access-Control-Allow-Headers", "authorization");
+			response.setHeader("Access-Control-Request-Method", RequestMethod.GET.toString());
+			
+			String header = request.getHeader("Authorization");
+			if (header.isEmpty() || header == null) {
+				throw new JwtException("No JWT token found in request headers");
+			}
+
+			JwtAuthenticationToken authRequest = new JwtAuthenticationToken(header);
+			return getAuthenticationManager().authenticate(authRequest);
 		}
-
-		JwtAuthenticationToken authRequest = new JwtAuthenticationToken(header);
-		return getAuthenticationManager().authenticate(authRequest);
+		else{
+			response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+			response.setHeader("Access-Control-Allow-Headers", "authorization");
+			response.setHeader("Access-Control-Request-Method", RequestMethod.GET.toString());
+			return null;	
+		}
 	}
 
 	/*
