@@ -35,9 +35,10 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 		System.out.println(request.getMethod());
 		if (request.getMethod().equals(RequestMethod.GET.toString())) {
 
-			response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+			response.setHeader("Access-Control-Allow-Origin", "http://ec2-13-126-239-177.ap-south-1.compute.amazonaws.com");
 			response.setHeader("Access-Control-Allow-Headers", "authorization");
-			response.setHeader("Access-Control-Request-Method", RequestMethod.GET.toString());
+			response.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE");
+			response.setHeader("Access-Control-Max-Age", "1800");
 			
 			String header = request.getHeader("Authorization");
 			if (header.isEmpty() || header == null) {
@@ -48,9 +49,10 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 			return getAuthenticationManager().authenticate(authRequest);
 		}
 		else{
-			response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+			response.setHeader("Access-Control-Allow-Origin", "http://ec2-13-126-239-177.ap-south-1.compute.amazonaws.com");
 			response.setHeader("Access-Control-Allow-Headers", "authorization");
-			response.setHeader("Access-Control-Request-Method", RequestMethod.GET.toString());
+			response.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE");
+			response.setHeader("Access-Control-Max-Age", "1800");
 			return null;	
 		}
 	}
