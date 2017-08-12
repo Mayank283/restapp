@@ -51,7 +51,6 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
 		
-		System.out.println(request.getMethod());
 		if (request.getMethod().equals(RequestMethod.GET.toString())) {
 
 			response.setHeader("Access-Control-Allow-Origin", origin);

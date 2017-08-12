@@ -1,8 +1,11 @@
 package org.mayank.restapp.simple.security;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -17,6 +20,13 @@ public class JwtUtility {
 	@Value("${jwt.secret}")
 	private String secret;
 
+	Map<String, Object> publicClaims;
+
+	private static final String ENABLE = "enable";
+	
+	
+	
+
 	/**
 	 * Method to generate the JwtToken once the user is authenticated from
 	 * server
@@ -25,12 +35,15 @@ public class JwtUtility {
 	 *            sent from user login page consists of Username and Password
 	 * @return Jwt token created by the application
 	 */
-	public String generateToken(JwtUserRequest jwtUserRequest) {
+	public String generateToken(UserDetails userDetails) {
 
 		// ~ Set Payload/Claims of JWT
 		// ================================================================================================
 
-		Claims claims = Jwts.claims().setSubject(jwtUserRequest.getUserName()).setIssuedAt(new Date())
+		publicClaims = new HashMap<String, Object>();
+		publicClaims.put(ENABLE, userDetails.isEnabled());
+
+		Claims claims = Jwts.claims(publicClaims).setSubject(userDetails.getUsername()).setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + 4 * 60 * 1000));
 
 		// ~ Build Token
@@ -40,24 +53,20 @@ public class JwtUtility {
 				.signWith(SignatureAlgorithm.HS512, secret).compact();
 
 	}
+	
+	
+	
 
 	/**
-	 * Method to return username from JwtToken to create Userdetails Object
-	 * 
 	 * @param jwtToken
-	 *            submitted by the secured resource
-	 * @return username identity from the jwt token
+	 * @return
 	 */
-	public String getUsernameFromToken(String jwtToken) {
-
-		// String username;
+	public UserDetails getuserDetails(String jwtToken) {
 
 		Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(jwtToken);
-		System.out.println(claims.getHeader().getType());
-		System.out.println(claims.getSignature());
-		System.out.println(claims.getBody().getSubject());
-		System.out.println(claims.getBody().getIssuedAt());
-		System.out.println(claims.getBody().getExpiration());
-		return claims.getBody().getSubject();
+		String username = claims.getBody().getSubject();
+		Boolean enable = (Boolean) claims.getBody().get(ENABLE);
+		return new JwtUser(username, enable);
+
 	}
 }

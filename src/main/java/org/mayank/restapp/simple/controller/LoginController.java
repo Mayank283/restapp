@@ -2,6 +2,7 @@
 package org.mayank.restapp.simple.controller;
 
 
+import org.mayank.restapp.simple.exception.PasswordException;
 import org.mayank.restapp.simple.security.JwtUserRequest;
 import org.mayank.restapp.simple.security.JwtUserResponse;
 import org.mayank.restapp.simple.service.LoginService;
@@ -25,7 +26,7 @@ public class LoginController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public JwtUserResponse /*User*/ login(@RequestBody String userName,@RequestHeader("Authorization") String password/*@RequestHeader("From") String username*/) {
+	public JwtUserResponse /*User*/ login(@RequestBody String userName,@RequestHeader("Authorization") String password/*@RequestHeader("From") String username*/) throws PasswordException {
 		
 		jwtUserRequest.setUserName(userName);
 		jwtUserRequest.setPassword(password);

@@ -5,7 +5,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -48,13 +47,8 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
 
 		JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
 
-		String token = jwtAuthenticationToken.getToken();
-		String userName = jwtUtility.getUsernameFromToken(token);
+		String jwtToken = jwtAuthenticationToken.getToken();
 
-		if (userName == null) {
-			throw new UsernameNotFoundException(userName);
-		}
-
-		return new JwtUser(userName);
+		return jwtUtility.getuserDetails(jwtToken);
 	}
 }
