@@ -1,8 +1,11 @@
 package org.mayank.restapp.simple;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mayank.restapp.simple.dao.UserDetailsRepository;
+import org.mayank.restapp.simple.entities.Authority;
 import org.mayank.restapp.simple.entities.UserEntity;
 import org.mayank.restapp.simple.security.JwtUserRequest;
 import org.mayank.restapp.simple.service.LoginService;
@@ -32,6 +35,9 @@ public class UserDetailsRepositoryTest {
 		UserEntity userEntity = userDetailsRepository.findByUsername("mayankagd@gmail.com");
 
 		System.out.println(userEntity.getEmail());
+		List<Authority> auth = (List<Authority>)userEntity.getAuthorities();
+		System.out.println(auth.get(0).getRole_name());
+		System.out.println(auth.get(1).getRole_name());
 	}
 
 	@Test

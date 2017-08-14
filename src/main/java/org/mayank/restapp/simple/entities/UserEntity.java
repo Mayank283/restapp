@@ -1,8 +1,18 @@
 package org.mayank.restapp.simple.entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -11,6 +21,7 @@ public class UserEntity {
 
 	@Id
 	@Column(name = "user_id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long user_id;
 
 	@Column(name = "username")
@@ -34,11 +45,14 @@ public class UserEntity {
 	@Column(name = "lastname")
 	private String lastname;
 
+	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+	@JoinTable(name = "USER_AUTHORITIES", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Collection<Authority> authorities = new ArrayList<Authority>();
+
 	public UserEntity() {
 
 	}
-	
-	
+
 	/**
 	 * @param user_id
 	 * @param username
@@ -61,7 +75,6 @@ public class UserEntity {
 		this.middlename = middlename;
 		this.lastname = lastname;
 	}
-
 
 	/**
 	 * @return the user_id
@@ -122,7 +135,7 @@ public class UserEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public Boolean isEnable() {
 		return Boolean.parseBoolean(enable);
 	}
@@ -186,4 +199,20 @@ public class UserEntity {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
+
+	/**
+	 * @return the authorities
+	 */
+	public Collection<Authority> getAuthorities() {
+		return authorities;
+	}
+
+	/**
+	 * @param authorities
+	 *            the authorities to set
+	 */
+	public void setAuthorities(Collection<Authority> authorities) {
+		this.authorities = authorities;
+	}
+
 }
