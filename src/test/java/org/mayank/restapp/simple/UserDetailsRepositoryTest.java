@@ -1,12 +1,14 @@
 package org.mayank.restapp.simple;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mayank.restapp.simple.dao.UserDetailsRepository;
-import org.mayank.restapp.simple.entities.Authority;
-import org.mayank.restapp.simple.entities.UserEntity;
+import org.mayank.restapp.simple.entities.Roles;
+import org.mayank.restapp.simple.entities.User;
+import org.mayank.restapp.simple.repository.RolesRepository;
+import org.mayank.restapp.simple.repository.UserDetailsRepository;
 import org.mayank.restapp.simple.security.JwtUserRequest;
 import org.mayank.restapp.simple.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class UserDetailsRepositoryTest {
 	UserDetailsRepository userDetailsRepository;
 
 	@Autowired
+	RolesRepository rolesRepository;
+
+	@Autowired
 	UserDetailsService userDetailsService;
 
 	@Autowired
@@ -32,12 +37,15 @@ public class UserDetailsRepositoryTest {
 	@Test
 	public void givenShopAddToRepo() throws Exception {
 
-		UserEntity userEntity = userDetailsRepository.findByUsername("mayankagd@gmail.com");
+		User user = userDetailsRepository.findByUsername("blehbleh@gmail.com");
 
-		System.out.println(userEntity.getEmail());
-		List<Authority> auth = (List<Authority>)userEntity.getAuthorities();
-		System.out.println(auth.get(0).getRole_name());
-		System.out.println(auth.get(1).getRole_name());
+		System.out.println(user.getEmail());
+		
+		 List<Roles> auth = (List<Roles>) user.getRoles();
+
+		System.out.println(auth.get(0).getRolename());
+		System.out.println(auth.get(1).getRolename());
+		 
 	}
 
 	@Test
@@ -55,5 +63,26 @@ public class UserDetailsRepositoryTest {
 
 		loginService.generateToken(jwtUserRequest);
 
+	}
+
+	@Test
+	public void saveUser() {
+		List<Roles> roleList = new ArrayList<Roles>();
+		List<Roles> roleList2 = new ArrayList<Roles>();
+		Roles role1 = new Roles();
+		Roles role2 = new Roles();
+		role1.setRole_id(1);
+		role2.setRole_id(2);
+		roleList.add(role1);
+		roleList.add(role2);
+		roleList2.add(role1);
+		User user = new User("blehbleh@gmail.com", "blehbleh@gmail.com", "blehbleh@10", "true", "John", "Kumar",
+				"Carpenter");
+		User user2 = new User("mayankagd@gmail.com", "mayankagd@gmail.com", "Zhangguolao@10", "true", "Mayank", "Kumar",
+				"Agarwal");
+		user.setRoles(roleList);
+		user2.setRoles(roleList2);
+		userDetailsRepository.save(user);
+		userDetailsRepository.save(user2);
 	}
 }

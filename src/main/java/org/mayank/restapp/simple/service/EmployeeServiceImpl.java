@@ -3,9 +3,9 @@ package org.mayank.restapp.simple.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mayank.restapp.simple.dao.EmployeeRepository;
 import org.mayank.restapp.simple.entities.EmployeeEntity;
 import org.mayank.restapp.simple.exception.EmployeeNotFoundException;
+import org.mayank.restapp.simple.repository.EmployeeRepository;
 import org.mayank.restapp.simple.requestbody.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

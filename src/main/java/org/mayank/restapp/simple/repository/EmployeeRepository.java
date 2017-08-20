@@ -1,4 +1,4 @@
-package org.mayank.restapp.simple.dao;
+package org.mayank.restapp.simple.repository;
 
 import org.mayank.restapp.simple.entities.EmployeeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,22 +1,22 @@
 package org.mayank.restapp.simple.security;
 
-import org.mayank.restapp.simple.entities.UserEntity;
+import org.mayank.restapp.simple.entities.User;
 
 public class JwtUserFactory {
 
 	private JwtUserFactory() {
     }
 
-    public static JwtUser create(UserEntity userEntity) {
+    public static JwtUser create(User user) {
         return new JwtUser(
-                userEntity.getUser_id(),
-                userEntity.getUsername(),
-                userEntity.getFirstname(),
-                userEntity.getMiddlename(),
-                userEntity.getLastname(),
-                userEntity.getEmail(),
-                userEntity.getPassword(),
-                userEntity.isEnable()
+        		user.getUser_id(),
+        		user.getUsername(),
+        		user.getFirstname(),
+        		user.getMiddlename(),
+        		user.getLastname(),
+        		user.getEmail(),
+        		user.getPassword(),
+        		user.isEnable()
               //mapToGrantedAuthorities(user.getAuthorities()),
               //user.getLastPasswordResetDate()
         );
