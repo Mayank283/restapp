@@ -1,6 +1,7 @@
 package org.mayank.restapp.simple.security;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +33,7 @@ public class JwtUser implements UserDetails {
 	 * @param enabled
 	 */
 	public JwtUser(Long user_id, String userName, String firstName, String middleName, String lastName, String email,
-			String password, Boolean enabled) {
+			String password, Boolean enabled,List<GrantedAuthority> authorities) {
 		super();
 		this.user_id = user_id;
 		this.userName = userName;
@@ -42,16 +43,18 @@ public class JwtUser implements UserDetails {
 		this.email = email;
 		this.password = password;
 		this.enabled = enabled;
+		this.authorities=authorities;
 	}
 
 	/**
 	 * @param userName
 	 * @param enable
 	 */
-	public JwtUser(String userName,Boolean enable) {
+	public JwtUser(String userName,Boolean enable,Collection<? extends GrantedAuthority> authorities) {
 		super();
 		this.userName = userName;
 		this.enabled = enable;
+		this.authorities = authorities;
 	}
 
 	public Long getId() {

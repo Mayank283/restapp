@@ -10,6 +10,7 @@ import org.mayank.restapp.simple.entities.User;
 import org.mayank.restapp.simple.repository.RolesRepository;
 import org.mayank.restapp.simple.repository.UserDetailsRepository;
 import org.mayank.restapp.simple.security.JwtUserRequest;
+import org.mayank.restapp.simple.security.JwtUserResponse;
 import org.mayank.restapp.simple.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,10 +59,11 @@ public class UserDetailsRepositoryTest {
 	@Test
 	public void givenLogin() throws Exception {
 
-		jwtUserRequest.setUserName("mayankagd@gmail.com");
-		jwtUserRequest.setPassword("Triptolemus@10");
+		jwtUserRequest.setUserName("blehbleh@gmail.com");
+		jwtUserRequest.setPassword("ddcf5e599ffa22db3ef522ade5c5c02b");
 
-		loginService.generateToken(jwtUserRequest);
+		JwtUserResponse jwtUserResponse= loginService.generateToken(jwtUserRequest);
+		System.out.println(jwtUserResponse.getToken());
 
 	}
 
@@ -71,8 +73,8 @@ public class UserDetailsRepositoryTest {
 		List<Roles> roleList2 = new ArrayList<Roles>();
 		Roles role1 = new Roles();
 		Roles role2 = new Roles();
-		role1.setRole_id(1);
-		role2.setRole_id(2);
+		role1.setRole_name("1");
+		role2.setRole_name("2");
 		roleList.add(role1);
 		roleList.add(role2);
 		roleList2.add(role1);
